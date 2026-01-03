@@ -1,70 +1,100 @@
-# Getting Started with Create React App
+# QR-Based Loyalty Points System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A production-ready, security-first loyalty system designed for financial cooperatives. This system enables secure point accumulation and reward redemption via HMAC-signed QR codes.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Quick Start
 
-### `npm start`
+### 1. Backend Setup (Laravel)
+```bash
+cd loyaltysystem-backend
+composer install
+cp .env.example .env     # Configure DB_DATABASE, JWT_SECRET, and QR_SECRET
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 2. Frontend Setup (React)
+```bash
+cd loyaltysystem-frontend
+npm install
+cp .env.example .env     # Update VITE_API_BASE_URL
+npm run dev
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🛠 Features & Capabilities
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🔒 Security-First Design
+- **HMAC Signatures**: QR codes are cryptographically signed to prevent tampering.
+- **RBAC**: Role-Based Access Control for Admins, Staff, and Members.
+- **Audit Trails**: Immutable logs for every critical system action.
+- **Fraud Engine**: Integrated scoring to detect suspicious point accumulation.
 
-### `npm run build`
+### 💰 Points Engine
+- **Dynamic Rules**: Define rules like "1 Point per 100 PHP Deposit".
+- **Category Based**: Different earning rates for Loans, Deposits, and Attendance.
+- **Real-time Balance**: Instant point updates upon transaction confirmation.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🗺 System Workflows
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 🛡 Member Enrollment & Linking
+```mermaid
+graph TD
+    A[Admin creates User Account] -->|Role: Member| B(Login Account Ready)
+    C[Admin creates Member Profile] --> D(Loyalty Profile Ready)
+    B & D --> E[Admin links User to Member]
+    E --> F{Member can log in}
+    F -->|View| G[Balance & Personal QR]
+```
 
-### `npm run eject`
+### 📲 QR Transaction Flow
+```mermaid
+graph LR
+    A[Member Shows QR] --> B[Staff Scans QR]
+    B --> C{Verify Signature}
+    C -->|Valid| D[Enter Amount/Category]
+    D --> E[Points Engine Calculates]
+    E --> F[Balance Updated]
+    F --> G[Audit Log Created]
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📂 Project Architecture
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Component Hierarchy
+- `loyaltysystem-backend/`: API infrastructure, Security services, Points logic.
+- `loyaltysystem-frontend/`: 
+  - `/admin`: Dashboard, Analytics, Manager (Rules, Users, Members).
+  - `/staff`: QR Scanner and Transaction terminal.
+  - `/member`: Balance view, QR display, Rewards catalog.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 📡 API Endpoints (V1)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+| Method | Endpoint | Description | Access |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/auth/login` | User authentication | Public |
+| `GET` | `/dashboard/stats` | System analytics | Admin |
+| `POST` | `/scan` | Process points transaction | Staff/Admin |
+| `GET` | `/members/{id}/qr` | Get signed QR payload | Owner/Staff/Admin |
+| `GET` | `/audit-logs` | View activity history | Admin |
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 📄 Documentation
+For detailed technical implementation details, security logic, and database schema, please refer to:
+- [Technical Documentation](TECHNICAL_DOCUMENTATION.md)
+- [Backend Structure](loyaltysystem-backend/README.md)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🤝 Support
+Developed by ICT Department. For issues, please contact system administration.
