@@ -4,7 +4,7 @@ import { GiftOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import logo from '../logo.png';
+import logo from '../Logo.png';
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
